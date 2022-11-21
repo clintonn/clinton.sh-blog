@@ -1,16 +1,16 @@
 {
-  "name": "minimal-remix-stack",
+  "name": "clinton.sh-blog",
   "private": true,
-  "description": "The Minimal House Remix Stack to setup Remix with minimal typsescript, tailwind, linting, and formatting. Worry about storage, testing, or deployment later.",
+  "description": "Personal blog running on Remix",
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
     "build": "run-s build:*",
-    "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
+    "build:css": "node-sass ./styles -o ./app/styles --output-style compressed",
     "dev": "run-p dev:*",
-    "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "remix dev",
+    "dev:css": "npm run build:css && node-sass -rw ./styles -o ./app/styles",
     "generate:css": "npx tailwindcss -o ./app/tailwind.css",
     "lint": "eslint .",
     "start": "remix-serve build"
@@ -29,6 +29,7 @@
     "@types/react-dom": "^18.0.6",
     "eslint": "^8.11.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "node-sass": "^8.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.8",

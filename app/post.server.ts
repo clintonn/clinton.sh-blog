@@ -8,7 +8,6 @@ import remarkRehype from "remark-rehype";
 import remarkGfm from "remark-gfm";
 import compiler from "rehype-stringify";
 import { parse as yamlParse } from "yaml";
-import { json } from "@remix-run/node";
 import type { Post } from "~/util/types/Post";
 
 export const getPost = async (slug: string) => {
@@ -24,12 +23,10 @@ export const getPost = async (slug: string) => {
       .use(remarkRehype, { allowDangerousHtml: true })
       .process(post);
 
-    console.log(file);
-
-    return json<Post>({
+    return {
       frontmatter: file.data.frontmatter as Post["frontmatter"],
       content: file.value.toString(),
-    });
+    };
   } catch (error) {
     console.log(error);
     return null;

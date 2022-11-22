@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { prisma } from "~/db.server";
-import { extractPostData } from "~/util/extractPostData";
+import { prisma } from "../app/db.server";
+import { extractPostData } from "../app/util/extractPostData";
 
 const exists = async (fileName: string) => {
   return (await prisma.post.count({ where: { slug: fileName } })) !== 0;
@@ -50,4 +50,9 @@ export const cullPosts = async (fileNames: string[]) => {
   return prisma.post.deleteMany({
     where: { slug: { in: postsToDelete.map((post) => post.slug) } },
   });
+};
+
+export const syncPosts = async (fileNames: string[]) => {
+  await cullPosts(fileNames);
+  return Promise.all(fileNames.map((fileName) => upsertPost(fileName)));
 };

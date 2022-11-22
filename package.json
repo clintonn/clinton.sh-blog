@@ -6,8 +6,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "run-s build:*",
-    "build:remix": "remix build",
     "build:css": "node-sass ./styles -o ./app/styles --output-style compressed",
+    "build:remix": "remix build",
     "dev": "run-p dev:*",
     "dev:remix": "remix dev",
     "dev:css": "npm run build:css && node-sass -rw ./styles -o ./app/styles",

@@ -5,6 +5,7 @@ import remarkParse from "remark-parse";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParseFrontmatter from "remark-parse-frontmatter";
 import remarkRehype from "remark-rehype";
+import remarkGfm from "remark-gfm";
 import compiler from "rehype-stringify";
 import { parse as yamlParse } from "yaml";
 import { json } from "@remix-run/node";
@@ -17,10 +18,13 @@ export const getPost = async (slug: string) => {
     const file = await unified()
       .use(remarkParse)
       .use(compiler)
+      .use(remarkGfm)
       .use(remarkFrontmatter)
       .use(remarkParseFrontmatter, { yaml: yamlParse })
       .use(remarkRehype, { allowDangerousHtml: true })
       .process(post);
+
+    console.log(file);
 
     return json<Post>({
       frontmatter: file.data.frontmatter as Post["frontmatter"],

@@ -1,10 +1,9 @@
 import * as readLine from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
-import { PrismaClient } from "@prisma/client";
+// @TODO - get compilerOptions paths to work so we can use ~
+import { prisma } from "../app/db.server";
 
 const rl = readLine.createInterface({ input, output });
-const prisma = new PrismaClient();
-prisma.$connect();
 
 rl.question(
   "This script will destroy all posts in the database. Are you sure you want to proceed? (y/n)"

@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import path from "path";
+// @TODO - get compilerOptions paths to work so we can use ~
+import { prisma } from "../app/db.server";
 import { syncPosts } from "./util.server";
-const prisma = new PrismaClient();
 
 async function seed() {
   const postsPath = path.join(process.cwd(), "posts");

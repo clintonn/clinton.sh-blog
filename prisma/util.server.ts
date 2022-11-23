@@ -42,6 +42,7 @@ export const upsertPost = async (fileName: string) => {
       data: {
         content: postData.content,
         title: postData.frontmatter.title,
+        updatedAt: new Date(),
         isPublished: postData.frontmatter.is_published,
       },
     });

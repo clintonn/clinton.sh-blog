@@ -1,33 +1,21 @@
 import path from "path";
 import fs from "fs";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkParseFrontmatter from "remark-parse-frontmatter";
-import remarkRehype from "remark-rehype";
-import remarkGfm from "remark-gfm";
-import compiler from "rehype-stringify";
-import { parse as yamlParse } from "yaml";
+import { bundleMDX } from "mdx-bundler";
+
 import type { Post } from "~/util/types/Post";
 
 export const extractPostData = async (slug: string) => {
-  const postsDirectory = path.resolve(__dirname, "../posts");
+  const postsDirectory = path.resolve(path.join(process.cwd(), "posts"));
   try {
-    const post = fs.readFileSync(`${postsDirectory}/${slug}.md`, "utf8");
-    const file = await unified()
-      .use(remarkParse)
-      .use(compiler)
-      .use(remarkGfm)
-      .use(remarkFrontmatter)
-      .use(remarkParseFrontmatter, { yaml: yamlParse })
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .process(post);
+    const post = fs.readFileSync(`${postsDirectory}/${slug}`, "utf8");
+    const { code, frontmatter } = await bundleMDX({ source: post });
 
     return {
-      frontmatter: file.data.frontmatter as Post["frontmatter"],
-      content: file.value.toString(),
+      frontmatter: frontmatter as Post["frontmatter"],
+      content: code,
     };
   } catch (e) {
+    console.error(e);
     throw new Error("Something went wrong while processing the post");
   }
 };

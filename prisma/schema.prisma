@@ -17,4 +17,18 @@ model Post {
   updatedAt DateTime @updatedAt @default(now())
   content String
   isPublished Boolean @default(false)
+  tags TagsOnPosts[]
+}
+
+model Tag {
+  name String @id
+  posts TagsOnPosts[]
+}
+
+model TagsOnPosts {
+  post  Post  @relation(fields: [postId], references: [slug])
+  postId String
+  tag Tag @relation(fields: [tagId], references: [name])
+  tagId String
+  @@id([postId, tagId])
 }

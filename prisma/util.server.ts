@@ -39,7 +39,11 @@ export const upsertPost = async (fileName: string) => {
   if (await isUpdated(fileName)) {
     return prisma.post.update({
       where: { slug: fileName },
-      data: { content: postData.content, title: postData.frontmatter.title },
+      data: {
+        content: postData.content,
+        title: postData.frontmatter.title,
+        isPublished: postData.frontmatter.is_published,
+      },
     });
   }
 };

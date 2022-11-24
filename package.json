@@ -22,6 +22,7 @@
     "@remix-run/node": "^1.6.7",
     "@remix-run/react": "^1.6.7",
     "@remix-run/serve": "^1.6.7",
+    "esbuild": "^0.15.15",
     "mdx-bundler": "^9.0.1",
     "modern-css-reset": "^1.4.0",
     "react": "^18.2.0",

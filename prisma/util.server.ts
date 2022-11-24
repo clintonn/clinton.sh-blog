@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { prisma } from "../app/db.server";
-import { extractPostData } from "../app/util/extractPostData";
+import { extractPostData, trimMd } from "../app/util/extractPostData";
 
 const exists = async (fileName: string) => {
   return (await prisma.post.count({ where: { slug: fileName } })) !== 0;
@@ -30,8 +30,7 @@ export const upsertPost = async (fileName: string) => {
   if (!fileExists) {
     return prisma.post.create({
       data: {
-        slug: fileName,
-        content: postData.content,
+        slug: trimMd(fileName),
         title: postData.frontmatter.title,
       },
     });
@@ -42,7 +41,8 @@ export const upsertPost = async (fileName: string) => {
       data: {
         content: postData.content,
         title: postData.frontmatter.title,
-        isPublished: postData.frontmatter.is_published,
+        updatedAt: new Date(),
+        isPublished: postData.frontmatter.isPublished,
       },
     });
   }

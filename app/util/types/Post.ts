@@ -1,7 +1,8 @@
 export interface Frontmatter {
   title: string;
-  created_on: string;
-  is_published?: boolean;
+  createdAt: Date;
+  isPublished?: boolean;
+  updatedAt: Date;
 }
 
 export interface Post {

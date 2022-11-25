@@ -1,5 +1,5 @@
 # base node image
-FROM node:16-bullseye-slim as base
+FROM node:18-bullseye-slim as base
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV production
@@ -13,8 +13,7 @@ FROM base as deps
 WORKDIR /myapp
 
 ADD package.json yarn.lock .npmrc ./
-RUN npm install -g yarn
-RUN npm install --production=false
+RUN yarn --production=false
 
 # Setup production node_modules
 FROM base as production-deps
@@ -36,7 +35,7 @@ ADD prisma .
 RUN npx prisma generate
 
 ADD . .
-RUN npm run build
+RUN yarn build
 
 # Finally, build the production image with minimal footprint
 FROM base

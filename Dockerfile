@@ -35,12 +35,13 @@ ADD prisma .
 RUN npx prisma generate
 
 ADD . .
-RUN yarn build
+RUN yarn build:css
+RUN yarn build:remix
 
 # Finally, build the production image with minimal footprint
 FROM base
 
-ENV DATABASE_URL=file:/data/sqlite.db
+ENV DATABASE_URL="file:/data/sqlite.db"
 ENV PORT="8080"
 ENV NODE_ENV="production"
 

@@ -12,8 +12,8 @@ FROM base as deps
 
 WORKDIR /myapp
 
-ADD package.json package-lock.json .npmrc ./
-RUN npm install --production=false
+ADD package.json yarn.lock .npmrc ./
+RUN yarn --production=false
 
 # Setup production node_modules
 FROM base as production-deps
@@ -21,7 +21,7 @@ FROM base as production-deps
 WORKDIR /myapp
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
-ADD package.json package-lock.json .npmrc ./
+ADD package.json yarn.lock .npmrc ./
 RUN npm prune --production
 
 # Build the app
@@ -35,8 +35,8 @@ ADD prisma .
 RUN npx prisma generate
 
 ADD . .
-RUN npm run build:css
-RUN npm run build:remix
+RUN yarn build:css
+RUN yarn build:remix
 
 # Finally, build the production image with minimal footprint
 FROM base
@@ -44,8 +44,6 @@ FROM base
 ENV DATABASE_URL="file:/data/sqlite.db"
 ENV PORT="8080"
 ENV NODE_ENV="production"
-
-run echo $DATABASE_URL
 
 # add shortcut for connecting to database CLI
 RUN echo "#!/bin/sh\nset -x\nsqlite3 \$DATABASE_URL" > /usr/local/bin/database-cli && chmod +x /usr/local/bin/database-cli

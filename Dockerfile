@@ -35,7 +35,8 @@ ADD prisma .
 RUN npx prisma generate
 
 ADD . .
-RUN npm run build
+RUN npm run build:css
+RUN npm run build:remix
 
 # Finally, build the production image with minimal footprint
 FROM base
